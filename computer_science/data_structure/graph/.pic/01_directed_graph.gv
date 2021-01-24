@@ -1,0 +1,17 @@
+digraph G {
+    layout=sfdp
+    splines = false;
+    overlap = false;
+    sep = "+16";
+    node [shape=circle, fontsize=12, fixedsize=true, width=.4];
+    A -> A
+    A -> B
+    A -> C
+    B -> C
+    B -> D
+    C -> F
+    D -> E
+    E -> D
+    E -> F
+    G
+}
