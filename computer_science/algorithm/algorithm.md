@@ -6,18 +6,18 @@ Reference to [Big-O Cheat Sheet](https://www.bigocheatsheet.com/)
 
 ```text
    O(n!) O(2^n)   O(n^2)                                  O(lg(n))
-     |     |        |                                      __/
-     |     |        |                                  ___/
-     |     |        /                              ___/
-     |     |       /                           ___/
-     |     /      /                        ___/
-     |    |     /                      ___/
-     |   /     /                  ____/
-    /   |    _/              ____/
-   |   /   _/         ______/                              __ O(n)
-  /  _/ __/    ______/                    ________________/
- | _/__/______/         ________________/
-/_/_/_/________________/_____________________________________ O(lg(n)), O(1)
+    |     |        |                                      __/
+    |     |        |                                  ___/
+    |     |        /                              ___/
+    |     |       /                           ___/
+    |     /      /                        ___/
+    |    |     /                      ___/
+    |   /     /                  ____/
+   /   |    _/              ____/
+   |   /   _/         ______/                          ______ O(n)
+  /  _/ __/    ______/                ________________/
+ | _/__/______/      ________________/
+/_/_/_/_____________/________________________________________ O(lg(n)), O(1)
 ```
 
 O(n!) > O(2^n) > O(n^2) > O(n·lg(n)) > O(n) > O(lg(n)) > O(1)
@@ -99,8 +99,7 @@ int Quicksort::partition(vector<int> *arr, int lo, int hi)
     pivot = arr->at(hi);
     start = lo;
 
-    for (i=lo; i<=hi-1; i++) // hi-1: since arr[hi] is the pivot
-    {
+    for (i=lo; i<=hi-1; i++) { // hi-1: since arr[hi] is the pivot
         if (arr->at(i) < pivot) {
             iter_swap(arr->begin()+i, arr->begin()+start);
             start++;
