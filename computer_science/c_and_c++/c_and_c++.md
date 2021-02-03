@@ -109,9 +109,9 @@ address     | system      | (environment variables)
             +-------------+
             | heap        |
             +-------------+
-            | bss         | (uninitialized static variables)
+            | bss         | (uninitialized variables)
             +-------------+
-            | data        | (initialized static and global variables)
+            | data        | (initialized variables)
             +-------------+
 low         | text        | (code segment)
 address --> +-------------+
@@ -120,12 +120,13 @@ address --> +-------------+
 - **Text**: aka code segment, contains executable instructions
   - The text segment is usually placed below the heap or stack to prevent overflows from overwriting it
   - This segment is sharable, only a single copy needs to be in memory
-- **Data**: stores the global and static variables that are already initialized
+- **Data**: stores the global, static constant and external variables that are already initialized
   - Initialized data segment
 - **BSS**: named after an ancient assembler operator "block started by symbol"
   - Uninitialized data segment
-  - The bss segment stores the uninitialized **file scope** variables
+  - The bss segment stores the uninitialized static and global variables
   - Data in this segment will be initialized to 0
+  - Uninitialized variables do not have to occupy actual disk space in the objet file
 - **Heap**: stores the variables that are allocated by `malloc()` or other variances
   - The heap requires pointers to access it
   - The memory is not allocated discontinuously
@@ -167,11 +168,33 @@ int main() {
 
 ## Qualifiers
 
-- `auto`
-- Global and local variables
+- Global variables
+  - Being defined outside the function
+  - Having external linkage that can be accessed from other files with the same variable name
 - `extern`
+
+  g.cpp:
+  ```c
+  int g = 10; // global variable
+  ```
+
+  main.cpp:
+  ```c
+  extern int g;
+  int main() { return ++g; }
+  ```
+
+  Compile and execute:
+  ```
+  $ g++ main.cpp g.cpp -o test
+  $ ./test; echo $?
+  11
+  ```
+
 - `static` variable and function
   - What's the difference with and without `static`?
+    - The variables or functions with `static` qualifier will become file scope
+    - The file scope variables and functions can only be accessed within the same file
   - Difference between Global variable and static variable?
 - `register`
   - The variables will have lifespan throughout the execution
@@ -197,33 +220,61 @@ int main() {
     - Notice that in C++ or other modern compilers, `register` qualifier seems being deprecated, the compiler will ignore it.
 
 - `volatile`
-  - To tell the compiler not to optimize anything that has to do with the volatile variables. For example:
 
-    ```c
-    typedef struct {
-        int busy;
-        int data;
-    } myData;
+  To tell the compiler not to optimize anything that has to do with the volatile variables. For example:
 
-    void waiting_for_process_to_finish(myData *dp, int new_data)
-    {
-        while (dp->busy) {
-            // do nothing, just waiting
-        }
-        dp->data = new_data;
-    }
-    ```
+  ```c
+  typedef struct {
+      int busy;
+      int data;
+  } myData;
 
-    Since there's no assignment for `dp->busy`, the compiler will try to be smart to read it just once, cache it, and then go into the infinite loop. You know what's going to happen.
+  void waiting_for_process_to_finish(myData *dp, int new_data)
+  {
+      while (dp->busy) {
+          // do nothing, just waiting
+      }
+      dp->data = new_data;
+  }
+  ```
 
-    Simply define the variable as `volatile` to solve this problem:
+  Since there's no assignment for `dp->busy`, the compiler will try to be smart to read it just once, cache it, and then go into the infinite loop. You know what's going to happen.
 
-    ```c
-    void waiting_for_process_to_finish(volatile myData *dp, int new_data)
-    {   //                             ^^^^^^^^
-        // ...
-    }
-    ```
+  Simply define the variable as `volatile` to solve this problem:
+
+  ```c
+  void waiting_for_process_to_finish(volatile myData *dp, int new_data)
+  {   //                             ^^^^^^^^
+      while (dp->busy) {
+          // do nothing, just waiting
+      }
+      dp->data = new_data;
+  }
+  ```
+
+- `auto`
+
+  C++ compiler will choose a correct type for the variables defined with `auto`:
+
+  ```c
+  #include <iostream>
+  #include <vector>
+  using namespace std;
+
+  int main()
+  {
+    vector<int> v = { 2, 4, 6, 3, 5, 7, 9 };
+    // auto -> int
+    for (auto &i : v)
+        cout << i << endl;
+
+    // auto -> vector<int>::iterator
+    for (auto i=v.begin(); i!=v.end(); i++)
+        cout << *i << endl;
+
+    return 0;
+  }
+  ```
 
 ## Operators Overloading
 

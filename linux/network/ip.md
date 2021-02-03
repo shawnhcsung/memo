@@ -51,7 +51,7 @@ Since IPv6 address are relatively longer than IPv6 address, there are rules to s
 
 - Link-Local Address
 
-    The first 16 bits of link-local address is always always set to FE80. The next 48 bits are set to 0:
+    The first 16 bits of link-local address is always set to FE80. The next 48 bits are set to 0:
 
     ```text""::
     fe80:0000:0000:0000:0000:0000:0000:0000
