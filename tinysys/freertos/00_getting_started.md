@@ -97,17 +97,16 @@ Low power support
 
 ### Multitasking
 
-A piece of code (instructions) for a particular function can be regarded as a task to operating sㄋystem.
-
-Operating systems should be capable of running multiple tasks seemingly simultaneously even on a platform with single-core CPU.
-
-For this purpose, the following concepts are introduced:
+A piece of code (instructions) for a particular function can be regarded as a task to operating system. Operating systems should be capable of running multiple tasks seemingly simultaneously even on a platform with a single-core CPU. For this purpose, the following concepts are introduced:
 
 - Memory management
-  - Heap
+  - Heap_1:
+  - Heap_2: best-fit algorithm
+  - Heap_3: standard library `malloc()`
+  - Heap_4: first-fit algorithm
+  - Heap_5: first-fit algorithm on separate memory spaces
 - Task management
 - Queue management
-
 - Scheduling
   - Task priorities
   - Task states

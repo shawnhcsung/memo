@@ -25,7 +25,6 @@
 ```
 run cts -m CtsDevicePolicyManagerTestCases -t com.android.cts.devicepolicy.MixedDeviceOwnerTest#testDelegatedCertInstallerDeviceIdAttestation
 run cts -m CtsDevicePolicyManagerTestCases -t com.android.cts.devicepolicy.MixedManagedProfileOwnerTest#testDelegatedCertInstallerDeviceIdAttestation
-run cts -m CtsDevicePolicyManagerTestCases -t com.android.cts.devicepolicy.MixedManagedProfileOwnerTest#testDelegatedCertInstallerDeviceIdAttestation
 run cts -m CtsDevicePolicyManagerTestCases -t com.android.cts.devicepolicy.MixedManagedProfileOwnerTest#testDeviceIdAttestationForProfileOwner
 ```
 
